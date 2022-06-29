@@ -21,7 +21,9 @@ public class Main {
         log.info("number = {}", number);
 
         // get game bean from context (container)
-        Game game = context.getBean(Game.class);
+        MessageGenerator messageGenerator = context.getBean(MessageGenerator.class);
+        log.info("MessageGenerator Main Message = {}", messageGenerator.getMainMessage());
+        log.info("MessageGenerator Result Message = {}", messageGenerator.getResultMessage());
 
         // create context
         context.close();
