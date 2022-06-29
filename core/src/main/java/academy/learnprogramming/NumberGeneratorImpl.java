@@ -16,4 +16,5 @@ public class NumberGeneratorImpl implements NumberGenerator {
     public int getMaxNumber() {
         return maxNumber;
     }
+
 }

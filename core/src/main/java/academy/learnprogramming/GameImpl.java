@@ -2,11 +2,16 @@ package academy.learnprogramming;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 public class GameImpl implements Game {
 
     public static final Logger log = LoggerFactory.getLogger(GameImpl.class);
 
+    @Autowired
     private NumberGenerator numberGenerator;
     private int guessCount = 10;
     private int number;
@@ -16,10 +21,8 @@ public class GameImpl implements Game {
     private int remainingGuesses;
     private boolean validNumberRange = true;
 
-    public void setNumberGenerator(NumberGenerator numberGenerator) {
-        this.numberGenerator = numberGenerator;
-    }
-
+    // == init method ==
+    @PostConstruct
     @Override
     public void reset() {
         smallest = 0;
@@ -27,7 +30,12 @@ public class GameImpl implements Game {
         remainingGuesses = guessCount;
         biggest = numberGenerator.getMaxNumber();
         number = numberGenerator.next();
-        log.debug("the number is {}", number);
+        log.debug("resetting game: the number is {}", number);
+    }
+
+    @PreDestroy
+    public void preDestroy() {
+        log.info("in Game preDestroy");
     }
 
     @Override
