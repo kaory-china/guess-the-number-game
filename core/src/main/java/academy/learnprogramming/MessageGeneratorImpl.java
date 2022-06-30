@@ -14,28 +14,27 @@ public class MessageGeneratorImpl implements MessageGenerator {
 
     @Autowired
     private Game game;
-    private int guessCount = 10;
 
     @PostConstruct
-    public void gameValue() {
+    public void init() {
         log.info("game was injected, value is {}", game);
     }
 
     @Override
     public String getMainMessage() {
-        return format("Number is between {} and {}. Can you guess it?", game.getSmallest(), game.getBiggest());
+        return "Number is between " + game.getSmallest() + " and " + game.getBiggest() + ". Can you guess it?";
     }
 
     @Override
     public String getResultMessage() {
 
         if (game.isGameWon()) {
-            return format("You guessed it! The number was {}!", game.getNumber());
+            return "You guessed it! The number was " + game.getNumber();
         } else if (game.isGameLost()) {
-            return format("Not this time...the number was {}!", game.getNumber());
-        } else if (game.isValidNumberRange()) {
+            return "Not this time...the number was " + game.getNumber();
+        } else if (!game.isValidNumberRange()) {
             return "Invalid number range...try again";
-        } else if (game.getRemainingGuesses() == guessCount) {
+        } else if (game.getRemainingGuesses() == game.getGuessCount()) {
             return "What's your first guess?";
         } else {
             String direction = "Lower";
@@ -44,7 +43,7 @@ public class MessageGeneratorImpl implements MessageGenerator {
                 direction = "Higher";
             }
 
-            return format("{}! You have {} guesses left!", direction, game.getRemainingGuesses());
+            return direction + "! You have " + game.getRemainingGuesses() + " guesses left.";
         }
 
     }
